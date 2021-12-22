@@ -1,39 +1,55 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
-type HasName interface {
-	getName() string
+type hitung interface {
+	luas() float64
+	keliling() float64
 }
 
-func sayHello(hasname HasName) {
-	fmt.Println("Hello", hasname.getName())
+type lingkaran struct {
+	diameter float64
 }
 
-type Person struct {
-	Name string
+func (l lingkaran) jariJari() float64 {
+	return l.diameter / 2
 }
 
-func (person Person) getName() string {
-	return person.Name
+func (l lingkaran) luas() float64 {
+	return math.Pi * math.Pow(l.jariJari(), 2)
 }
 
-type Animal struct {
-	Kind string
+func (l lingkaran) keliling() float64 {
+	return math.Pi * l.diameter
 }
 
-func (animal Animal) getName() string {
-	return animal.Kind
+type persegi struct {
+	sisi float64
+}
+
+func (p persegi) luas() float64 {
+	return math.Pow(p.sisi, 2)
+}
+
+func (p persegi) keliling() float64 {
+	return p.sisi * 4
 }
 
 func main() {
-	person := Person{"oman"}
+	var bangunDatar hitung
 
-	sayHello(person)
+	bangunDatar = persegi{10.0}
+	fmt.Println("===== persegi")
+	fmt.Println("luas      :", bangunDatar.luas())
+	fmt.Println("keliling  :", bangunDatar.keliling())
 
-	animal := Animal{
-		Kind: "mamalia",
-	}
-
-	sayHello(animal)
+	bangunDatar = lingkaran{14.0}
+	fmt.Println("===== lingkaran")
+	fmt.Println("luas      :", bangunDatar.luas())
+	fmt.Println("keliling  :", bangunDatar.keliling())
+	// type casting
+	fmt.Println("jari-jari :", bangunDatar.(lingkaran).jariJari())
 }
